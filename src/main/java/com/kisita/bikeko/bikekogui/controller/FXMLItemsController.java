@@ -146,11 +146,13 @@ public class FXMLItemsController implements Initializable {
     }
 
     public void setItemDetails(Data data) {
+        initFields();
+                
         nameField.setText(data.getName());
         priceField.setText(data.getPrice());
         authorField.setText(data.getAuthor());
-        widthField.setText("");
-        heightField.setText("");
+        widthField.setText(data.getWidth());
+        heightField.setText(data.getHeight());
         depthField.setText("");
         weightField.setText(data.getWeight());
         
@@ -160,6 +162,10 @@ public class FXMLItemsController implements Initializable {
         framedCheckBox.setSelected(data.isFramed());
         uniqueCheckBox.setSelected(data.isUnique());
         availabilityCheckBox.setSelected(data.isAvailable());
+        
+        typeField.getSelectionModel().select(data.getType());
+        setTechniqueField(data.getType());
+        techniqueField.getSelectionModel().select(getTechniqueField(data.getType(),data.getTechnique()));
     }
 
     @FXML
@@ -208,6 +214,25 @@ public class FXMLItemsController implements Initializable {
             default:
                 break;
         }
+    }
+    
+    private String getTechniqueField(String type,String technique) {
+       
+        String ret = "";
+        int tech  = Integer.valueOf(technique);
+        switch (type) {
+            case PAINTING:
+                ret = PAINTING_TECHNIQUES[tech];
+                break;
+            case "b":
+                break;
+            case "c":
+                break;
+            default:
+                break;
+        }
+        
+        return ret;
     }
 
     private void initFields() {

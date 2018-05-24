@@ -53,7 +53,7 @@ public class Firebase {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildName) {
                 insertItemsData(dataSnapshot);
-                //System.out.println("Data " +  dataSnapshot.getKey());
+                System.out.println("Data " +  dataSnapshot.getKey());
             }
 
             @Override

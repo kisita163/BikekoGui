@@ -3,6 +3,8 @@ package com.kisita.bikeko.bikekogui.item;
 import static com.kisita.bikeko.bikekogui.item.BikekoValues.TYPE;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Data {
@@ -36,6 +38,10 @@ public class Data {
     private boolean mUnique = false;
 
     private String mTechnique;
+    
+    private String mWidth  = "";
+    
+    private String mHeight = "";
 
     public ArrayList<String> getPictures() {
         return mPictures;
@@ -82,7 +88,20 @@ public class Data {
         mTechnique =  descArray[1];
         
         mPictures = new ArrayList<>(Arrays.asList(pictures.split(",")));
+        
+        Pattern p = Pattern.compile("-?\\d+");
+        Matcher m = p.matcher(size);
+        
+        int index = 0;
+        while (m.find()) {
+            if(index == 0)
+                mWidth = m.group();
+            else
+                mHeight = m.group();
+            index++;
+        }
     }
+    
     public Data(String name,
                String price,
                String author,
@@ -223,7 +242,7 @@ public class Data {
             System.out.println("Picure("+i+") : " + this.getPictures().get(i));
     }
 
-    private String getTechnique() {
+    public String getTechnique() {
         return this.mTechnique;
     }
 
@@ -238,4 +257,24 @@ public class Data {
         
         return TYPE[index];
     }
+
+    public String getWidth() {
+        return mWidth;
+    }
+
+    public void setWidth(String width) {
+        this.mWidth = width;
+    }
+
+    public String getHeight() {
+        return mHeight;
+    }
+
+    public void setHeight(String height) {
+        this.mHeight = height;
+    }
+    
+    
 }
+
+

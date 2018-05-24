@@ -11,7 +11,7 @@
 
 <AnchorPane id="AnchorPane" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox layoutX="200.0" layoutY="14.0" spacing="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <VBox layoutX="119.0" layoutY="14.0" prefHeight="470.0" prefWidth="602.0" spacing="20.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
          <children>
             <HBox VBox.vgrow="ALWAYS">
                <children>
@@ -34,7 +34,7 @@
             </HBox>
             <HBox spacing="20.0">
                <children>
-                  <SubScene height="22.0" width="200.0">
+                  <SubScene height="22.0" width="309.0">
                     <root>
                       <Region />
                     </root>
