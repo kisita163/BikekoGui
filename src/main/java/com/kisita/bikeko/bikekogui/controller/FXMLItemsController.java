@@ -260,15 +260,14 @@ public class FXMLItemsController implements Initializable {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/FXMLPictures.fxml"));
             
-            
-            picturesController = new FXMLPicturesController();
-            picturesController.setItemPictures(picturesArray);
+            picturesController = new FXMLPicturesController(picturesArray);
             fxmlLoader.setController(picturesController);
             
             Parent page = (Parent) fxmlLoader.load();
             
 
             Stage pictures = new Stage();
+            picturesController.setStage(pictures);
             pictures.initModality(Modality.WINDOW_MODAL);
             pictures.initOwner(this.stage);
             pictures.setScene(new Scene(page));
