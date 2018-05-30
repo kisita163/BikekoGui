@@ -24,7 +24,6 @@
 <?import com.kisita.bikeko.bikekogui.controller.*?>
 <?import com.kisita.bikeko.bikekogui.item.*?>
 
-
 <AnchorPane xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.kisita.bikeko.bikekogui.controller.FXMLItemsController">
     <children>
         <VBox>
@@ -102,7 +101,7 @@
                                             </columnResizePolicy>   
                                         </TableView>
                                         <VBox alignment="bottom_right" prefHeight="284.0" prefWidth="841.0" spacing="10" GridPane.rowIndex="3">
-                                            <TextField fx:id="nameField" onInputMethodTextChanged="#onTextChanged" prefHeight="25.0" prefWidth="113.0" promptText="Name" />
+                                            <TextField fx:id="nameField" prefHeight="25.0" prefWidth="113.0" promptText="Name" />
                                             <TextField fx:id="priceField" prefWidth="90" promptText="Price" />
                                             <TextField fx:id="authorField" prefWidth="150" promptText="Author" />
                                             <HBox spacing="20.0">
@@ -111,7 +110,7 @@
                                                     <Region prefHeight="200.0" prefWidth="200.0" />
                                                     <TextField fx:id="heightField" prefWidth="400.0" promptText="Height" />
                                                     <Region prefHeight="200.0" prefWidth="200.0" />
-                                                    <TextField fx:id="depthField" prefWidth="400.0" promptText="Depth" />
+                                                    <TextField fx:id="depthField" disable="true" prefWidth="400.0" promptText="Depth" />
                                                     <Region prefHeight="200.0" prefWidth="200.0" />
                                                     <TextField fx:id="weightField" prefHeight="25.0" prefWidth="400.0" promptText="Weight" />
                                                 </children>
@@ -132,8 +131,8 @@
                                                 <Region prefHeight="200.0" prefWidth="200.0" />
                                                 <Region prefHeight="200.0" prefWidth="200.0" />
                                                 <Button onAction="#newItem" prefHeight="25.0" prefWidth="150.0" text="New" />
-                                                <Button disable="true" mnemonicParsing="false" prefWidth="150.0" text="Add" />
-                                                <Button mnemonicParsing="false" prefHeight="25.0" prefWidth="150.0" text="Update" />
+                                                <Button fx:id="addButton" disable="true" mnemonicParsing="false" onAction="#addItem" prefWidth="150.0" text="Add" />
+                                                <Button mnemonicParsing="false" onAction="#updateFirebase" prefHeight="25.0" prefWidth="150.0" text="Update" />
                                                 <padding>
                                                     <Insets top="20.0" />
                                                 </padding>

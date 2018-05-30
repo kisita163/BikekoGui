@@ -1,5 +1,7 @@
 package com.kisita.bikeko.bikekogui.item;
 
+import static com.kisita.bikeko.bikekogui.item.BikekoValues.PAINTING;
+import static com.kisita.bikeko.bikekogui.item.BikekoValues.PAINTING_TECHNIQUES;
 import static com.kisita.bikeko.bikekogui.item.BikekoValues.TYPE;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -43,6 +45,8 @@ public class Data {
     private String mWidth  = "";
     
     private String mHeight = "";
+    
+    private String mDepth;
 
     public ArrayList<String> getPictures() {
         return mPictures;
@@ -86,7 +90,7 @@ public class Data {
         if(descArray[3].equalsIgnoreCase("0")){
            mFramed = true;
         }
-        mTechnique =  descArray[1];
+        mTechnique =  getTechniqueString(getTypeString(type),descArray[1]);
         
         mPictures = new ArrayList<>(Arrays.asList(pictures.split(",")));
         
@@ -174,6 +178,8 @@ public class Data {
     }
     
     public String getSize() {
+        String size = mWidth + " x " + mHeight + " cm";
+        mSize.set(size);
         return mSize.get();
     }
 
@@ -258,6 +264,30 @@ public class Data {
     public String getTechnique() {
         return this.mTechnique;
     }
+    
+    
+    private String getTechniqueString(String type,String technique){
+        String ret = technique;
+        switch(type){
+            case PAINTING:
+                ret =  searchTechnique(PAINTING_TECHNIQUES,technique);
+                break;
+        }
+        return ret;
+    }
+    
+    private String searchTechnique(String[] techniques, String technique) {
+        int index = 0;
+        
+        try{
+            index = Integer.valueOf(technique);
+          
+        }catch(NumberFormatException e){
+            e.printStackTrace();
+        }
+        System.out.println("returned string   is : " + techniques[index]);
+        return techniques[index];
+    }
 
     private String getTypeString(String type) {
         int index = 0;
@@ -294,6 +324,18 @@ public class Data {
     public StringProperty authorProperty() {
         return mAuthor;
     } 
+
+    public void setWeight(String weight) {
+        this.mWeight.set(weight);
+    }
+
+    public void setDepth(String depth) {
+        this.mDepth =  depth;
+    }
+
+    public void setTechnique(String technique) {
+        this.mTechnique = technique;
+    }
 }
 
 

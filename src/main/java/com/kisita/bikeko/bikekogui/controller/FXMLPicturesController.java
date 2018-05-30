@@ -48,14 +48,14 @@ public class FXMLPicturesController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-        setImageView("");
+        setImageView();
     }    
     
     public FXMLPicturesController(ArrayList<String> pictures){
         itemPictures = pictures;
     }
     
-    private void setImageView(String source){
+    private void setImageView(){
         String imageSource = itemPictures.get(currentImage);
         //imageField.setImage(new Image(imageSource));
         final ImageLoader load = new ImageLoader(imageSource);

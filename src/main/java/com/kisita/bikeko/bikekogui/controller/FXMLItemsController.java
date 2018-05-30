@@ -25,6 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
@@ -82,6 +83,9 @@ public class FXMLItemsController implements Initializable {
     private CheckBox uniqueCheckBox;
     @FXML
     private CheckBox availabilityCheckBox;
+    
+    @FXML
+    private Button addButton;
 
     private Stage stage;
 
@@ -109,7 +113,7 @@ public class FXMLItemsController implements Initializable {
         priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
         authorColumn.setCellValueFactory(cellData -> cellData.getValue().authorProperty());
 
-        typeField.getItems().addAll((Object) TYPE);
+        typeField.getItems().addAll(TYPE);
 
         typeField.valueProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -118,6 +122,14 @@ public class FXMLItemsController implements Initializable {
                 data.get(currentIndex).setType(newValue);
             }
         });
+        
+        techniqueField.valueProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                data.get(currentIndex).setTechnique(newValue);
+            }
+        });
+                
         priceField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -154,7 +166,7 @@ public class FXMLItemsController implements Initializable {
                 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
                     depthField.setText(oldValue);
                 }
-                //TODO data.get(currentIndex).setDepth(heightField.getText()); 
+                data.get(currentIndex).setDepth(heightField.getText()); 
             }
         });
 
@@ -164,7 +176,7 @@ public class FXMLItemsController implements Initializable {
                 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
                     weightField.setText(oldValue);
                 }
-                //TODO data.get(currentIndex).setWeight(weightField.getText());
+                data.get(currentIndex).setWeight(weightField.getText());
             }
         });
 
@@ -196,6 +208,35 @@ public class FXMLItemsController implements Initializable {
                 setItemDetails(currentData);
             }
         });
+        
+        signedCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                data.get(currentIndex).setSigned(newValue);            
+            }
+        });
+        
+        framedCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                data.get(currentIndex).setFramed(newValue);
+            }
+        });
+        
+        uniqueCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                data.get(currentIndex).setUnique(newValue);
+            }
+        });
+        
+        availabilityCheckBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                data.get(currentIndex).setAvailability(newValue);
+            }
+        });
+
 
         tableView.setItems(data);
     }
@@ -220,7 +261,7 @@ public class FXMLItemsController implements Initializable {
 
         typeField.getSelectionModel().select(data.getType());
         setTechniqueField(data.getType());
-        techniqueField.getSelectionModel().select(getTechniqueField(data.getType(), data.getTechnique()));
+        techniqueField.getSelectionModel().select(data.getTechnique());
     }
 
     @FXML
@@ -254,19 +295,17 @@ public class FXMLItemsController implements Initializable {
         data.add(item);*/
 
         initFields();
+        picturesArray = new ArrayList<>();
+        addButton.setDisable(false);
     }
 
     private void setTechniqueField(String type) {
-        techniqueField.getItems().clear();
         switch (type) {
             case PAINTING:
                 techniqueField.getItems().addAll(PAINTING_TECHNIQUES);
                 break;
-            case "b":
-                break;
-            case "c":
-                break;
             default:
+                techniqueField.getItems().clear();
                 break;
         }
     }
@@ -350,9 +389,17 @@ public class FXMLItemsController implements Initializable {
     public void picturesArray(ArrayList<String> pictures) {
         this.picturesArray = pictures;
     }
-
+    
     @FXML
-    void onTextChanged(InputMethodEvent event) {
-        System.out.println("-----------> " + event.getCommitted());
+    void addItem(ActionEvent event) {
+
+    }
+    
+    @FXML
+    void updateFirebase(ActionEvent event) {
+        for(Data it : data){
+            it.printData();
+            System.out.println("\n");
+        }
     }
 }
