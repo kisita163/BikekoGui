@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,9 +27,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.InputMethodEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -42,6 +43,17 @@ public class FXMLItemsController implements Initializable {
 
     @FXML
     private TableView<Data> tableView;
+    @FXML
+    private TableColumn<Data, String> nameColumn;
+    @FXML
+    private TableColumn<Data, String> typeColumn;
+
+    @FXML
+    private TableColumn<Data, String> priceColumn;
+
+    @FXML
+    private TableColumn<Data, String> authorColumn;
+        
     @FXML
     private TextField nameField;
     @FXML
@@ -70,25 +82,40 @@ public class FXMLItemsController implements Initializable {
     private CheckBox uniqueCheckBox;
     @FXML
     private CheckBox availabilityCheckBox;
-    @FXML
-    private ImageView imageView;
 
     private Stage stage;
 
     private ArrayList<String> picturesArray;
-    
+
     FXMLPicturesController picturesController = null;
+
+    private ObservableList< Data> data = FXCollections
+            .observableArrayList();
+
+    private Data currentData;
+
+    private int currentIndex;
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        typeField.getItems().addAll(TYPE);
+
+        nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+        typeColumn.setCellValueFactory(cellData -> cellData.getValue().typeProperty());
+        priceColumn.setCellValueFactory(cellData -> cellData.getValue().priceProperty());
+        authorColumn.setCellValueFactory(cellData -> cellData.getValue().authorProperty());
+
+        typeField.getItems().addAll((Object) TYPE);
+
         typeField.valueProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 setTechniqueField(newValue);
+                data.get(currentIndex).setType(newValue);
             }
         });
         priceField.textProperty().addListener(new ChangeListener<String>() {
@@ -97,6 +124,7 @@ public class FXMLItemsController implements Initializable {
                 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
                     priceField.setText(oldValue);
                 }
+                data.get(currentIndex).setPrice(priceField.getText());
             }
         });
 
@@ -106,6 +134,7 @@ public class FXMLItemsController implements Initializable {
                 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
                     widthField.setText(oldValue);
                 }
+                data.get(currentIndex).setWidth(widthField.getText());
             }
         });
 
@@ -115,6 +144,7 @@ public class FXMLItemsController implements Initializable {
                 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
                     heightField.setText(oldValue);
                 }
+                data.get(currentIndex).setHeight(heightField.getText());
             }
         });
 
@@ -124,6 +154,7 @@ public class FXMLItemsController implements Initializable {
                 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
                     depthField.setText(oldValue);
                 }
+                //TODO data.get(currentIndex).setDepth(heightField.getText()); 
             }
         });
 
@@ -133,6 +164,26 @@ public class FXMLItemsController implements Initializable {
                 if (!newValue.matches("\\d{0,7}([\\.]\\d{0,4})?")) {
                     weightField.setText(oldValue);
                 }
+                //TODO data.get(currentIndex).setWeight(weightField.getText());
+            }
+        });
+
+        authorField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println("Old value is  : " + oldValue + " New valus is  : " + newValue);
+                
+                data.get(currentIndex).setAuthor(newValue);
+            }
+        });
+        
+        
+        nameField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                System.out.println("Old value is  : " + oldValue + " New valus is  : " + newValue);
+                
+                data.get(currentIndex).setName(newValue);
             }
         });
 
@@ -140,14 +191,18 @@ public class FXMLItemsController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
                 System.out.println("Selected row is " + tableView.getSelectionModel().getSelectedItems().get(0).getName());
-                setItemDetails(tableView.getSelectionModel().getSelectedItems().get(0));
+                currentData = tableView.getSelectionModel().getSelectedItems().get(0);
+                currentIndex = tableView.getSelectionModel().getSelectedIndex();
+                setItemDetails(currentData);
             }
         });
+
+        tableView.setItems(data);
     }
 
     public void setItemDetails(Data data) {
-        initFields();
-                
+        //initFields();
+
         nameField.setText(data.getName());
         priceField.setText(data.getPrice());
         authorField.setText(data.getAuthor());
@@ -155,22 +210,22 @@ public class FXMLItemsController implements Initializable {
         heightField.setText(data.getHeight());
         depthField.setText("");
         weightField.setText(data.getWeight());
-        
+
         picturesArray = data.getPictures();
 
         signedCheckBox.setSelected(data.isSigned());
         framedCheckBox.setSelected(data.isFramed());
         uniqueCheckBox.setSelected(data.isUnique());
         availabilityCheckBox.setSelected(data.isAvailable());
-        
+
         typeField.getSelectionModel().select(data.getType());
         setTechniqueField(data.getType());
-        techniqueField.getSelectionModel().select(getTechniqueField(data.getType(),data.getTechnique()));
+        techniqueField.getSelectionModel().select(getTechniqueField(data.getType(), data.getTechnique()));
     }
 
     @FXML
-    protected void addItem(ActionEvent event) {
-        String size = widthField.getText() + " x " + heightField.getText() + " cm";
+    protected void newItem(ActionEvent event) {
+        /*String size = widthField.getText() + " x " + heightField.getText() + " cm";
         System.out.println("Name     : " + nameField.getText());
         System.out.println("Price    : " + priceField.getText());
         System.out.println("Author   : " + authorField.getText());
@@ -196,7 +251,7 @@ public class FXMLItemsController implements Initializable {
                 availabilityCheckBox.isSelected());
 
         ObservableList<Data> data = tableView.getItems();
-        data.add(item);
+        data.add(item);*/
 
         initFields();
     }
@@ -215,11 +270,11 @@ public class FXMLItemsController implements Initializable {
                 break;
         }
     }
-    
-    private String getTechniqueField(String type,String technique) {
-       
+
+    private String getTechniqueField(String type, String technique) {
+
         String ret = "";
-        int tech  = Integer.valueOf(technique);
+        int tech = Integer.valueOf(technique);
         switch (type) {
             case PAINTING:
                 ret = PAINTING_TECHNIQUES[tech];
@@ -231,7 +286,7 @@ public class FXMLItemsController implements Initializable {
             default:
                 break;
         }
-        
+
         return ret;
     }
 
@@ -256,15 +311,14 @@ public class FXMLItemsController implements Initializable {
 
     @FXML
     protected void handlePictures(ActionEvent event) {
-       
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/FXMLPictures.fxml"));
-            
+
             picturesController = new FXMLPicturesController(picturesArray);
             fxmlLoader.setController(picturesController);
-            
+
             Parent page = (Parent) fxmlLoader.load();
-            
 
             Stage pictures = new Stage();
             picturesController.setStage(pictures);
@@ -284,7 +338,21 @@ public class FXMLItemsController implements Initializable {
         return tableView;
     }
 
+    /**
+     * Returns the data as an observable list of Persons.
+     *
+     * @return
+     */
+    public ObservableList<Data> getItemsList() {
+        return this.data;
+    }
+
     public void picturesArray(ArrayList<String> pictures) {
         this.picturesArray = pictures;
+    }
+
+    @FXML
+    void onTextChanged(InputMethodEvent event) {
+        System.out.println("-----------> " + event.getCommitted());
     }
 }

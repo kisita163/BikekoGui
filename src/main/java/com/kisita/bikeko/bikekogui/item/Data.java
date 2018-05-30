@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Data {
 
@@ -156,8 +157,20 @@ public class Data {
         return mName.get();
     }
     
+    public StringProperty nameProperty() {
+        return mName;
+    }
+    
+    public StringProperty typeProperty() {
+        return mType;
+    }
+    
     public void setName(String name) {
         mName.set(name);
+    }
+    
+    public void setAuthor(String author) {
+        mAuthor.set(author);
     }
     
     public String getSize() {
@@ -273,8 +286,14 @@ public class Data {
     public void setHeight(String height) {
         this.mHeight = height;
     }
+
+    public StringProperty priceProperty() {
+        return mPrice;
+    } 
     
-    
+    public StringProperty authorProperty() {
+        return mAuthor;
+    } 
 }
 
 

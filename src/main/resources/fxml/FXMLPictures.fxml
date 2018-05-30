@@ -27,8 +27,8 @@
             <HBox prefHeight="0.0" prefWidth="485.0" spacing="10.0">
                <children>
                   <Region prefHeight="25.0" prefWidth="234.0" />
-                  <Button mnemonicParsing="false" prefWidth="100.0" text="&lt;" />
-                  <Button mnemonicParsing="false" prefWidth="100.0" text="&gt;" />
+                  <Button mnemonicParsing="false" onAction="#onBack" prefWidth="100.0" text="&lt;" />
+                  <Button mnemonicParsing="false" onAction="#onForward" prefWidth="100.0" text="&gt;" />
                   <Region prefHeight="200.0" prefWidth="234.0" />
                </children>
             </HBox>

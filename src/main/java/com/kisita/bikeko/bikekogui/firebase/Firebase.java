@@ -127,9 +127,9 @@ public class Firebase {
                     FirebaseUtils.getItemData(dataSnapshot,"description"),
                     FirebaseUtils.getPicures(dataSnapshot));
             
-            item.printData();
+            //item.printData();
             
-            this.mContext.getTableViewController().getTableView().getItems().add(item);
+            this.mContext.getTableViewController().getItemsList().add(item);
         
             /*Data i = new Data(
                     FirebaseUtils.getItemId(dataSnapshot), 

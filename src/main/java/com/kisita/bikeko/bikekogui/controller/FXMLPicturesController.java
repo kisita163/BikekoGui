@@ -6,12 +6,12 @@
 package com.kisita.bikeko.bikekogui.controller;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,6 +34,8 @@ public class FXMLPicturesController implements Initializable {
     private ArrayList<String> itemPictures;
     
     private Stage mStage;
+    
+    private int currentImage = 0;
 
     public void setStage(Stage stage) {
         this.mStage = stage;
@@ -54,7 +56,7 @@ public class FXMLPicturesController implements Initializable {
     }
     
     private void setImageView(String source){
-        String imageSource = itemPictures.get(0);//"https://firebasestorage.googleapis.com/v0/b/glam-afc14.appspot.com/o/items%2Fbaby%2Fbaby_new.png?alt=media&token=c3b5780c-0595-453f-839c-732703c16ffe";
+        String imageSource = itemPictures.get(currentImage);
         //imageField.setImage(new Image(imageSource));
         final ImageLoader load = new ImageLoader(imageSource);
         load.setOnSucceeded(new EventHandler() {
@@ -76,43 +78,34 @@ public class FXMLPicturesController implements Initializable {
         File file = fileChooser.showOpenDialog(this.mStage);
         if (file != null) {
             try {
-                System.out.println(file.getCanonicalPath());
-            } catch (IOException ex) {
+                String path = file.toURI().toString();
+                itemPictures.add(path);
+                imageField.setImage(new Image(path));
+            } catch (Exception ex) {
                 Logger.getLogger(FXMLPicturesController.class.getName()).log(Level.SEVERE, null, ex);
+                return;
             }
         }
+        currentImage++;
     }
 
     public void setItemPictures(ArrayList<String> itemPictures) {
         this.itemPictures = itemPictures;
     }
     
-    
-    
-    /*public void centerImage() {
+    @FXML
+    void onBack(ActionEvent event) {
+        currentImage--;
+        if(currentImage < 0)
+            return;
+        imageField.setImage(new Image(itemPictures.get(currentImage)));
+    }
 
-        Image img = imageField.getImage();
-        if (img != null) {
-            double w = 0;
-            double h = 0;
-
-            double ratioX = imageField.getFitWidth() / img.getWidth();
-            double ratioY = imageField.getFitHeight() / img.getHeight();
-
-            double reducCoeff = 0;
-            if (ratioX >= ratioY) {
-                reducCoeff = ratioY;
-            } else {
-                reducCoeff = ratioX;
-            }
-
-            w = img.getWidth() * reducCoeff;
-            h = img.getHeight() * reducCoeff;
-
-            imageField.setX((imageField.getFitWidth() - w) / 2);
-            imageField.setY((imageField.getFitHeight() - h) / 2);
-
-        }
-    }*/
-    
+    @FXML
+    void onForward(ActionEvent event) {
+        currentImage++;
+        if(currentImage > itemPictures.size()-1)
+            return;
+        imageField.setImage(new Image(itemPictures.get(currentImage)));
+    }
 }
