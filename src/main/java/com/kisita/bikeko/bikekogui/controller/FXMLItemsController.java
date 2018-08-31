@@ -297,6 +297,9 @@ public class FXMLItemsController implements Initializable {
         initFields();
         picturesArray = new ArrayList<>();
         addButton.setDisable(false);
+        data.add(new Data());
+        currentData = data.get(data.size() - 1);
+        currentIndex = data.size() - 1;
     }
 
     private void setTechniqueField(String type) {

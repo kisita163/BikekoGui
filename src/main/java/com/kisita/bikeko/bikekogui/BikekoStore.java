@@ -18,18 +18,22 @@ import javafx.stage.Stage;
  * @author HuguesKi
  */
 public class BikekoStore extends Application {
+
     private Firebase firebase;
+
     FXMLItemsController tableViewController = null;
+
+
     @Override
     public void start(Stage stage) throws Exception {
-       
+
         FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/FXMLItemsView.fxml"));
         AnchorPane root = loader.load();
-            
+
         tableViewController = loader.getController();
         tableViewController.setStage(stage);
         Scene scene = new Scene(root);
-       
+
         stage.setScene(scene);
         stage.setResizable(false);
         //Image icon = new Image(getClass().getResourceAsStream("pictures/icon.png"));

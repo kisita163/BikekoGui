@@ -40,7 +40,7 @@ public class Data {
     
     private boolean mUnique = false;
 
-    private String mTechnique;
+    private String mTechnique = "";
     
     private String mWidth  = "";
     
@@ -55,6 +55,11 @@ public class Data {
     public void setPictures(ArrayList<String> pictures) {
         mPictures = pictures;
     }
+    
+    public Data(){
+        
+    }
+    
     public Data(
                 String id,
                 String name,
